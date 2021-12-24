@@ -11,6 +11,8 @@ import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { HomeService } from './services/home.service';
+import { AboutService } from './services/about.service';
+import { SkillsService } from './services/skills.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,7 @@ import { HomeService } from './services/home.service';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ],
-  providers: [HomeService],
+  providers: [HomeService, AboutService, SkillsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

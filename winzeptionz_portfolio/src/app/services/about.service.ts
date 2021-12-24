@@ -10,9 +10,7 @@ import {
 import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
 import { About } from '../models/about.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AboutService {
   constructor(private firestore: Firestore, private storage: Storage) {}
 

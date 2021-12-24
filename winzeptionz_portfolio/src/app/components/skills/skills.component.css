@@ -64,30 +64,18 @@
   background-color: var(--first-color);
 }
 
-.skills__html {
-  width: 90%;
-}
-
-.skills__css {
-  width: 80%;
-}
-
-.skills__js {
-  width: 60%;
-}
-
-.skills__react {
-  width: 85%;
-}
-
 .skills__close .skills__list {
   height: 0;
   overflow: hidden;
+  transition: 0.4s;
+  opacity: 0;
 }
 
 .skills__open .skills__list {
   height: max-content;
   margin-bottom: var(--mb-2-5);
+  transition: 0.4s;
+  opacity: 1;
 }
 
 .skills__open .skills__arrow {
