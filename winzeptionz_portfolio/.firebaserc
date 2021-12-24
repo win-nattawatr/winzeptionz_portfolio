@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "winzeptionportfolio": {
+      "hosting": {
+        "winzeptionz_portfolio": [
+          "winzeptionportfolio"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "winzeptionportfolio"
+  }
+}

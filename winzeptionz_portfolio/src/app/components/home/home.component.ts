@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { map, mergeMap } from 'rxjs';
+import { Home } from 'src/app/models/home.model';
 import { HomeService } from 'src/app/services/home.service';
 
 @Component({
@@ -7,38 +8,32 @@ import { HomeService } from 'src/app/services/home.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  linkedInUrl?: string;
-  facebookUrl?: string;
-  lineContactUrl?: string;
-
-  private linkedInUrlSupscription?: Subscription;
-  private facebookUrlSupscription?: Subscription;
-  private lineContactUrlSupscription?: Subscription;
+export class HomeComponent implements OnInit {
+  homeData?: Home;
+  profileImageUrl?: string;
 
   constructor(private homeService: HomeService) {}
 
   ngOnInit(): void {
-    this.linkedInUrlSupscription = this.homeService
-      .getLinkedInUrl()
-      .subscribe((url) => {
-        this.linkedInUrl = url;
-      });
-    this.facebookUrlSupscription = this.homeService
-      .getFacebookUrl()
-      .subscribe((url) => {
-        this.facebookUrl = url;
-      });
-    this.lineContactUrlSupscription = this.homeService
-      .getLineUrl()
-      .subscribe((url) => {
-        this.lineContactUrl = url;
+    this.homeService
+      .getHomeData()
+      .pipe(
+        map((homes) => homes.pop()),
+        mergeMap(async (home) => {
+          await this.getHomeProfileImageUrl(home);
+          return home;
+        })
+      )
+      .subscribe((homeData) => {
+        this.homeData = homeData;
       });
   }
 
-  ngOnDestroy(): void {
-    this.linkedInUrlSupscription?.unsubscribe();
-    this.facebookUrlSupscription?.unsubscribe();
-    this.lineContactUrlSupscription?.unsubscribe();
+  private async getHomeProfileImageUrl(homeData: Home | undefined) {
+    if (homeData?.profileImg?.name) {
+      this.profileImageUrl = await this.homeService.getHomeProfileImage(
+        homeData.profileImg.name
+      );
+    }
   }
 }

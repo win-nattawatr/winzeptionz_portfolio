@@ -10,10 +10,14 @@
   margin-bottom: var(--mb-2-5);
 }
 
-.about__info {
+.about__infos {
   display: flex;
   justify-content: space-evenly;
   margin-bottom: var(--mb-2-5);
+}
+
+.about__info {
+  margin: 0.25rem;
 }
 
 .about__info-title {
