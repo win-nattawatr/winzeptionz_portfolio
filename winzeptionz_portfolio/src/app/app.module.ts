@@ -13,6 +13,11 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { HomeService } from './services/home.service';
 import { AboutService } from './services/about.service';
 import { SkillsService } from './services/skills.service';
+import { QualificationComponent } from './components/qualification/qualification.component';
+import { QualificationService } from './services/qualification.service';
+import { ServicesComponent } from './components/services/services.component';
+import { ServicesService } from './services/services.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -21,14 +26,23 @@ import { SkillsService } from './services/skills.service';
     HomeComponent,
     AboutComponent,
     SkillsComponent,
+    QualificationComponent,
+    ServicesComponent,
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ],
-  providers: [HomeService, AboutService, SkillsService],
+  providers: [
+    HomeService,
+    AboutService,
+    SkillsService,
+    QualificationService,
+    ServicesService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

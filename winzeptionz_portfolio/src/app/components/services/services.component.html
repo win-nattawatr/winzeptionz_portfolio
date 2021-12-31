@@ -1,0 +1,52 @@
+<ng-container *ngIf="servicesData">
+  <section class="services section" id="services">
+    <h2 class="section__title">Services</h2>
+    <span class="section__subtitle">What i offer</span>
+
+    <div class="services__container container grid">
+      <ng-container
+        *ngFor="let service of servicesData.services; let i = index"
+      >
+        <div class="services__content">
+          <div>
+            <i class="uil uil-clipboard-alt services__icon"></i>
+            <h3 class="services__title">{{ service.name }}</h3>
+          </div>
+
+          <span
+            class="
+              button button--flex button--small button--link
+              services__button
+            "
+            (click)="activeModal(i)"
+          >
+            View More
+            <i class="uil uil-arrow-right button__icon"></i>
+          </span>
+
+          <div
+            class="services__modal"
+            [ngClass]="activeModalIndex == i ? 'active-modal' : ''"
+          >
+            <div class="services__modal-content">
+              <h4 class="services__modal-title">{{ service.name }}</h4>
+              <i
+                class="uil uil-times services__modal-close"
+                (click)="closeModal()"
+              ></i>
+
+              <ul class="services__modal-services grid">
+                <ng-container *ngFor="let detail of service.details">
+                  <li class="services__modal-service">
+                    <i class="uil uil-check-square services__modal-icon"></i>
+                    <p>{{ detail }}</p>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</ng-container>

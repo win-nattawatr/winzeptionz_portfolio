@@ -1,0 +1,118 @@
+<ng-container *ngIf="qualificationData">
+  <section class="qualification section" id="qualification">
+    <h2 class="section__title">Qualification</h2>
+    <span class="section__subtitle">My personal journey</span>
+
+    <div class="qualification__container container">
+      <div class="qualification__tabs">
+        <div
+          class="qualification__button button--flex"
+          [ngClass]="activeTab == 1 ? 'qualification__active' : ''"
+          (click)="tabClick(1)"
+        >
+          <i class="uil uil-graduation-cap qualification__icon"></i>
+          Education
+        </div>
+        <div
+          class="qualification__button button--flex"
+          [ngClass]="activeTab == 2 ? 'qualification__active' : ''"
+          (click)="tabClick(2)"
+        >
+          <i class="uil uil-briefcase-alt qualification__icon"></i>
+          Work
+        </div>
+      </div>
+
+      <div class="qualification__sections">
+        <div
+          class="qualification__content"
+          [ngClass]="activeTab == 1 ? 'qualification__active' : ''"
+        >
+          <ng-container
+            *ngFor="
+              let education of qualificationData.educations;
+              let i = index
+            "
+          >
+            <div class="qualification__data">
+              <ng-container *ngIf="i % 2 != 0">
+                <div></div>
+
+                <div>
+                  <span class="qualification__rounder"></span>
+                  <span
+                    *ngIf="i + 1 != qualificationData.educations.length"
+                    class="qualification__line"
+                  ></span>
+                </div>
+              </ng-container>
+
+              <div>
+                <h3 class="qualification__title">{{ education.role }}</h3>
+                <span class="qualification__subtitle">{{
+                  education.address
+                }}</span>
+                <div class="qualification__calendar">
+                  <i class="uil uil-calendar-alt"></i>
+                  {{ education.period.from }} - {{ education.period.to }}
+                </div>
+              </div>
+
+              <ng-container *ngIf="i % 2 == 0">
+                <div>
+                  <span class="qualification__rounder"></span>
+                  <span
+                    *ngIf="i + 1 != qualificationData.educations.length"
+                    class="qualification__line"
+                  ></span>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+
+        <div
+          class="qualification__content"
+          [ngClass]="activeTab == 2 ? 'qualification__active' : ''"
+        >
+          <ng-container
+            *ngFor="let work of qualificationData.works; let i = index"
+          >
+            <div class="qualification__data">
+              <ng-container *ngIf="i % 2 != 0">
+                <div></div>
+
+                <div>
+                  <span class="qualification__rounder"></span>
+                  <span
+                    *ngIf="i + 1 != qualificationData.works.length"
+                    class="qualification__line"
+                  ></span>
+                </div>
+              </ng-container>
+
+              <div>
+                <h3 class="qualification__title">{{ work.role }}</h3>
+                <span class="qualification__subtitle">{{ work.address }}</span>
+                <div class="qualification__calendar">
+                  <i class="uil uil-calendar-alt"></i>
+                  {{ work.period.from }} - {{ work.period.to }}
+                </div>
+              </div>
+
+              <ng-container *ngIf="i % 2 == 0">
+                <div>
+                  <span class="qualification__rounder"></span>
+                  <span
+                    *ngIf="i + 1 != qualificationData.works.length"
+                    class="qualification__line"
+                  ></span>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>

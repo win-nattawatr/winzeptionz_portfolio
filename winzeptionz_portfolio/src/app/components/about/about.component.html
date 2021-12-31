@@ -1,33 +1,35 @@
-<section class="about section" id="about">
-  <h2 class="section__title">About Me</h2>
-  <span class="section__subtitle">My introduction</span>
-  <div class="about__container container grid">
-    <img [src]="profileImageUrl" alt="" class="about__img" />
-    <div class="about__data">
-      <p class="about__description">
-        {{ aboutData?.description }}
-      </p>
-      <div class="about__infos">
-        <ng-container *ngFor="let info of aboutData?.infos">
-          <div class="about__info">
-            <span class="about__info-title">{{ info.first }}</span>
-            <span class="about__info-name">{{ info.second }} </span>
+<ng-container *ngIf="aboutData">
+  <section class="about section" id="about">
+    <h2 class="section__title">About Me</h2>
+    <span class="section__subtitle">My introduction</span>
+    <div class="about__container container grid">
+      <img [src]="profileImageUrl" alt="" class="about__img" />
+      <div class="about__data">
+        <p class="about__description">
+          {{ aboutData.description }}
+        </p>
+        <div class="about__infos">
+          <ng-container *ngFor="let info of aboutData.infos">
+            <div class="about__info">
+              <span class="about__info-title">{{ info.first }}</span>
+              <span class="about__info-name">{{ info.second }} </span>
+            </div>
+          </ng-container>
+        </div>
+
+        <ng-container *ngIf="aboutData.cv.name">
+          <div class="about__buttons">
+            <a
+              download=""
+              [href]="cvUrl"
+              target="_blank"
+              class="button button--flex"
+            >
+              Download CV<i class="uil uil-download-alt button__icon"></i>
+            </a>
           </div>
         </ng-container>
       </div>
-
-      <ng-container *ngIf="aboutData?.cv?.name">
-        <div class="about__buttons">
-          <a
-            download=""
-            [href]="cvUrl"
-            target="_blank"
-            class="button button--flex"
-          >
-            Download CV<i class="uil uil-download-alt button__icon"></i>
-          </a>
-        </div>
-      </ng-container>
     </div>
-  </div>
-</section>
+  </section>
+</ng-container>
