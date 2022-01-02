@@ -1,6 +1,6 @@
-<header class="header" id="header">
+<header #header class="header" id="header">
   <nav class="nav container">
-    <a href="#" class="nav__logo">Nattawat R</a>
+    <a href="#" class="nav__logo">{{ getName() }}</a>
     <div class="nav__menu" id="nav-menu" [ngClass]="{ 'show-menu': navToggle }">
       <ul class="nav__list grid">
         <li class="nav__item">
@@ -41,6 +41,13 @@
       ></i>
     </div>
     <div class="nav__btns">
+      <i
+        class="uil uil-moon change-theme"
+        #themeButton
+        id="theme-button"
+        (click)="changeTheme()"
+      ></i>
+
       <div class="nav__toggle" id="nav-toggle" (click)="showMenu()">
         <i class="uil uil-apps"></i>
       </div>

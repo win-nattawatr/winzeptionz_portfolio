@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   Firestore,
   collectionData,
@@ -13,7 +13,13 @@ import { Qualification } from '../models/qualification.model';
 export class QualificationService {
   constructor(private firestore: Firestore) {}
 
-  getQualificationData(): Observable<Qualification[]> {
+  getQualification() {
+    return this.getQualificationData().pipe(
+      map((qualifications) => qualifications.pop())
+    );
+  }
+
+  private getQualificationData(): Observable<Qualification[]> {
     const qualificationCollection = collection(
       this.firestore,
       'qualification'

@@ -1,9 +1,9 @@
 <ng-container *ngIf="aboutData">
-  <section class="about section" id="about">
+  <section #section class="about section" id="about">
     <h2 class="section__title">About Me</h2>
     <span class="section__subtitle">My introduction</span>
     <div class="about__container container grid">
-      <img [src]="profileImageUrl" alt="" class="about__img" />
+      <img [src]="aboutData.profileImgUrl" alt="" class="about__img" />
       <div class="about__data">
         <p class="about__description">
           {{ aboutData.description }}
@@ -21,7 +21,7 @@
           <div class="about__buttons">
             <a
               download=""
-              [href]="cvUrl"
+              [href]="aboutData.cvUrl"
               target="_blank"
               class="button button--flex"
             >

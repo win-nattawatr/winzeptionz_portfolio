@@ -71,10 +71,26 @@
   color: var(--first-color);
 }
 
+.nav__btns {
+  display: flex;
+  align-items: center;
+}
+
 .nav__close:hover {
   color: var(--first-color-alt);
 }
 
 .show-menu {
   bottom: 0;
+}
+
+.change-theme {
+  font-size: 1.25rem;
+  color: var(--title-color);
+  margin-right: var(--mb-1);
+  cursor: pointer;
+}
+
+.change-theme:hover {
+  color: var(--first-color);
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { SwiperModule } from 'swiper/angular';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -18,6 +19,11 @@ import { QualificationService } from './services/qualification.service';
 import { ServicesComponent } from './components/services/services.component';
 import { ServicesService } from './services/services.service';
 import { AppRoutingModule } from './app-routing.module';
+import { PortfolioComponent } from './components/portfolio/portfolio.component';
+import { PortfolioService } from './services/portfolio.service';
+import { ContactComponent } from './components/contact/contact.component';
+import { ContactService } from './services/contact.service';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +34,14 @@ import { AppRoutingModule } from './app-routing.module';
     SkillsComponent,
     QualificationComponent,
     ServicesComponent,
+    PortfolioComponent,
+    ContactComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    SwiperModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
@@ -42,6 +52,8 @@ import { AppRoutingModule } from './app-routing.module';
     SkillsService,
     QualificationService,
     ServicesService,
+    PortfolioService,
+    ContactService,
   ],
   bootstrap: [AppComponent],
 })

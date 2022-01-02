@@ -28,6 +28,7 @@ export class Home {
     x: number;
     y: number;
   };
+  profileImgUrl?: string;
   subtitle: string;
   title: string;
 

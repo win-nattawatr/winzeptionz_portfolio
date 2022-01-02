@@ -1,5 +1,5 @@
 <ng-container *ngIf="homeData">
-  <section class="home section" id="home">
+  <section #section class="home section" id="home">
     <div class="home__container container grid">
       <div class="home__content grid">
         <div class="home__social">
@@ -52,7 +52,7 @@
                 class="home__blob-img"
                 [attr.x]="homeData.profileImg.x"
                 [attr.y]="homeData.profileImg.y"
-                [attr.href]="profileImageUrl"
+                [attr.href]="homeData.profileImgUrl"
               />
             </g>
           </svg>

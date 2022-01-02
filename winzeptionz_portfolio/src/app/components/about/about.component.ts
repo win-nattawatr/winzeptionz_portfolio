@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { map, mergeMap } from 'rxjs';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { About } from 'src/app/models/about.model';
-import { AboutService } from 'src/app/services/about.service';
 
 @Component({
   selector: 'app-about',
@@ -9,42 +15,35 @@ import { AboutService } from 'src/app/services/about.service';
   styleUrls: ['./about.component.css'],
 })
 export class AboutComponent implements OnInit {
-  aboutData?: About;
-  profileImageUrl?: string;
-  cvUrl?: string;
+  @Input() aboutData?: About;
+  @ViewChild('section') section?: ElementRef;
 
-  constructor(private aboutService: AboutService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.aboutService
-      .getAboutData()
-      .pipe(
-        map((abouts) => abouts.pop()),
-        mergeMap(async (about) => {
-          await this.getAboutProfileImageUrl(about);
-          return about;
-        }),
-        mergeMap(async (about) => {
-          await this.getAboutCVUrl(about);
-          return about;
-        })
-      )
-      .subscribe((aboutData) => {
-        this.aboutData = aboutData;
-      });
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.setActive();
   }
 
-  private async getAboutProfileImageUrl(aboutData: About | undefined) {
-    if (aboutData?.profileImg?.name) {
-      this.profileImageUrl = await this.aboutService.getAboutProfileImage(
-        aboutData.profileImg.name
-      );
-    }
+  @HostListener('window:scroll', ['$event']) // for window scroll events
+  onScroll(event: any) {
+    this.setActive();
   }
 
-  private async getAboutCVUrl(aboutData: About | undefined) {
-    if (aboutData?.cv?.name) {
-      this.cvUrl = await this.aboutService.getAboutCV(aboutData.cv.name);
+  setActive() {
+    let sectionHeight = this.section?.nativeElement.offsetHeight;
+    let sectionTop = this.section?.nativeElement.offsetTop - 50;
+    let sectionId = this.section?.nativeElement.getAttribute('id');
+
+    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+      document
+        .querySelector(`.nav__menu a[href*='${sectionId}']`)
+        ?.classList.add('active-link');
+    } else {
+      document
+        .querySelector(`.nav__menu a[href*='${sectionId}']`)
+        ?.classList.remove('active-link');
     }
   }
 }

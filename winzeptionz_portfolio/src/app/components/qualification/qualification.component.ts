@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import { Qualification } from 'src/app/models/qualification.model';
-import { QualificationService } from 'src/app/services/qualification.service';
 
 @Component({
   selector: 'app-qualification',
@@ -9,20 +7,14 @@ import { QualificationService } from 'src/app/services/qualification.service';
   styleUrls: ['./qualification.component.css'],
 })
 export class QualificationComponent implements OnInit {
-  qualificationData?: Qualification;
+  @Input() qualificationData?: Qualification;
   activeTab: number;
-  constructor(private qualificationService: QualificationService) {
+
+  constructor() {
     this.activeTab = 1;
   }
 
-  ngOnInit(): void {
-    this.qualificationService
-      .getQualificationData()
-      .pipe(map((qualifications) => qualifications.pop()))
-      .subscribe((qualificationData) => {
-        this.qualificationData = qualificationData;
-      });
-  }
+  ngOnInit(): void {}
 
   tabClick(tabNumber: number) {
     this.activeTab = tabNumber;

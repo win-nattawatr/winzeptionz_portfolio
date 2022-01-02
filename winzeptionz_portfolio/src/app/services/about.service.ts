@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, mergeMap, Observable, tap } from 'rxjs';
 import {
   Firestore,
   collectionData,
@@ -12,35 +12,42 @@ import { About } from '../models/about.model';
 
 @Injectable()
 export class AboutService {
-  aboutDataLoading$: BehaviorSubject<boolean>;
-  aboutProfileImage$: BehaviorSubject<boolean>;
-  aboutCVLoading$: BehaviorSubject<boolean>;
+  constructor(private firestore: Firestore, private storage: Storage) {}
 
-  constructor(private firestore: Firestore, private storage: Storage) {
-    this.aboutDataLoading$ = new BehaviorSubject<boolean>(false);
-    this.aboutProfileImage$ = new BehaviorSubject<boolean>(false);
-    this.aboutCVLoading$ = new BehaviorSubject<boolean>(false);
+  getAbout() {
+    return this.getAboutData().pipe(
+      map((abouts) => abouts.pop()),
+      mergeMap(async (about) => {
+        if (about?.profileImg?.name) {
+          about.profileImgUrl = await this.getAboutProfileImage(
+            about.profileImg.name
+          );
+        }
+        return about;
+      }),
+      mergeMap(async (about) => {
+        if (about?.cv?.name) {
+          about.cvUrl = await this.getAboutCV(about.cv.name);
+        }
+        return about;
+      })
+    );
   }
 
-  getAboutData(): Observable<About[]> {
+  private getAboutData(): Observable<About[]> {
     const aboutCollection = collection(this.firestore, 'about').withConverter(
       About.FireStoreConvertor
     );
     const activeAboutData = query(aboutCollection, where('active', '==', true));
-    return collectionData(activeAboutData).pipe(
-      tap(() => this.aboutDataLoading$.next(true))
-    );
+    return collectionData(activeAboutData);
   }
 
-  getAboutProfileImage(fileName: string) {
+  private getAboutProfileImage(fileName: string) {
     const imageRef = ref(this.storage, `about/${fileName}`);
-    return getDownloadURL(imageRef).then((url) => {
-      this.aboutProfileImage$.next(true);
-      return url;
-    });
+    return getDownloadURL(imageRef);
   }
 
-  getAboutCV(fileName: string) {
+  private getAboutCV(fileName: string) {
     const cvRef = ref(this.storage, `about/${fileName}`);
     return getDownloadURL(cvRef);
   }

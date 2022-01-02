@@ -6,15 +6,15 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Home } from 'src/app/models/home.model';
+import { Contact } from 'src/app/models/contact.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  selector: 'app-contact',
+  templateUrl: './contact.component.html',
+  styleUrls: ['./contact.component.css'],
 })
-export class HomeComponent implements OnInit {
-  @Input() homeData?: Home;
+export class ContactComponent implements OnInit {
+  @Input() contactData?: Contact;
   @ViewChild('section') section?: ElementRef;
 
   constructor() {}

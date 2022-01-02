@@ -24,9 +24,11 @@ export class About {
   profileImg: {
     name: string;
   };
+  profileImgUrl?: string;
   cv: {
     name: string;
   };
+  cvUrl?: string;
 
   static get FireStoreConvertor() {
     return {

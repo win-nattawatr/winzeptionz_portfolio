@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, mergeMap, Observable } from 'rxjs';
 import {
   Firestore,
   collectionData,
@@ -14,7 +14,21 @@ import { Home } from '../models/home.model';
 export class HomeService {
   constructor(private firestore: Firestore, private storage: Storage) {}
 
-  getHomeData(): Observable<Home[]> {
+  getHome() {
+    return this.getHomeData().pipe(
+      map((homes) => homes.pop()),
+      mergeMap(async (home) => {
+        if (home?.profileImg?.name) {
+          home.profileImgUrl = await this.getHomeProfileImage(
+            home.profileImg.name
+          );
+        }
+        return home;
+      })
+    );
+  }
+
+  private getHomeData(): Observable<Home[]> {
     const homeCollection = collection(this.firestore, 'home').withConverter(
       Home.FireStoreConvertor
     );
@@ -22,7 +36,7 @@ export class HomeService {
     return collectionData(activeHomeData);
   }
 
-  getHomeProfileImage(fileName: string) {
+  private getHomeProfileImage(fileName: string) {
     const fileRef = ref(this.storage, `home/${fileName}`);
     return getDownloadURL(fileRef);
   }

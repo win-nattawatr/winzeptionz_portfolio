@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   Firestore,
   collectionData,
@@ -13,7 +13,11 @@ import { Services } from '../models/services.model';
 export class ServicesService {
   constructor(private firestore: Firestore) {}
 
-  getServicesData(): Observable<Services[]> {
+  getServices() {
+    return this.getServicesData().pipe(map((services) => services.pop()));
+  }
+
+  private getServicesData(): Observable<Services[]> {
     const servicesCollection = collection(
       this.firestore,
       'services'

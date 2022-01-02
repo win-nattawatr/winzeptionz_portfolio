@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Skills } from 'src/app/models/skills.model';
-import { SkillsService } from 'src/app/services/skills.service';
 
 @Component({
   selector: 'app-skills',
@@ -9,20 +14,40 @@ import { SkillsService } from 'src/app/services/skills.service';
   styleUrls: ['./skills.component.css'],
 })
 export class SkillsComponent implements OnInit {
-  skillData?: Skills;
+  @Input() skillData?: Skills;
+  @ViewChild('section') section?: ElementRef;
+
   currentToggle: number;
 
-  constructor(private skillsService: SkillsService) {
+  constructor() {
     this.currentToggle = 0;
   }
 
-  ngOnInit(): void {
-    this.skillsService
-      .getSkillsData()
-      .pipe(map((skills) => skills.pop()))
-      .subscribe((skillData) => {
-        this.skillData = skillData;
-      });
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.setActive();
+  }
+
+  @HostListener('window:scroll', ['$event']) // for window scroll events
+  onScroll(event: any) {
+    this.setActive();
+  }
+
+  setActive() {
+    let sectionHeight = this.section?.nativeElement.offsetHeight;
+    let sectionTop = this.section?.nativeElement.offsetTop - 50;
+    let sectionId = this.section?.nativeElement.getAttribute('id');
+
+    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+      document
+        .querySelector(`.nav__menu a[href*='${sectionId}']`)
+        ?.classList.add('active-link');
+    } else {
+      document
+        .querySelector(`.nav__menu a[href*='${sectionId}']`)
+        ?.classList.remove('active-link');
+    }
   }
 
   setCurrentToggle(index: number) {
