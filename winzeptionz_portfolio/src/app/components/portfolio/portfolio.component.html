@@ -17,7 +17,8 @@
               <h3 class="portfolio__title">{{ work.name }}</h3>
               <p class="portfolio__description">{{ work.description }}</p>
               <a
-                href="#"
+                [href]="work.targetUrl"
+                target="_blank"
                 class="button button--flex button--small portfolio__button"
               >
                 See more

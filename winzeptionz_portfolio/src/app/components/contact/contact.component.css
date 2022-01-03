@@ -23,3 +23,9 @@
   color: var(--text-color-light);
   display: block;
 }
+
+@media screen and (min-width: 568px) {
+  .contact__container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
