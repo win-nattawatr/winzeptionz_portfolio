@@ -24,6 +24,8 @@ import { PortfolioService } from './services/portfolio.service';
 import { ContactComponent } from './components/contact/contact.component';
 import { ContactService } from './services/contact.service';
 import { FooterComponent } from './components/footer/footer.component';
+import { MainComponent } from './main/main.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { FooterComponent } from './components/footer/footer.component';
     PortfolioComponent,
     ContactComponent,
     FooterComponent,
+    MainComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,

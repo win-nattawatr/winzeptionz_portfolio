@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { from, map, mergeMap, Observable, of, toArray } from 'rxjs';
 import {
   Firestore,
-  collectionData,
   collection,
   query,
   where,
+  getDocs,
 } from '@angular/fire/firestore';
 import { Portfolio } from '../models/portfolio.model';
 import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
@@ -14,27 +13,17 @@ import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
 export class PortfolioService {
   constructor(private firestore: Firestore, private storage: Storage) {}
 
-  getPortfolio() {
-    return this.getPortfolioData().pipe(
-      map((portfolios) => portfolios.pop()),
-      mergeMap((portfolio) => {
-        if (portfolio?.works) {
-          return from(portfolio.works).pipe(
-            mergeMap(async (work) => {
-              const url = await this.getWorkImage(work.imgName);
-              work.imgUrl = url;
-              return work;
-            }),
-            toArray(),
-            map((works) => ({ ...portfolio, works }))
-          );
-        }
-        return of(portfolio);
-      })
-    );
+  async getPortfolio() {
+    const portfolio = (await this.getPortfolioData()).pop();
+    if (portfolio?.works) {
+      portfolio.works.map(async (work) => {
+        work.imgUrl = await this.getWorkImage(work.imgName);
+      });
+    }
+    return portfolio;
   }
 
-  private getPortfolioData(): Observable<Portfolio[]> {
+  private async getPortfolioData(): Promise<Portfolio[]> {
     const portfolioCollection = collection(
       this.firestore,
       'portfolio'
@@ -43,7 +32,8 @@ export class PortfolioService {
       portfolioCollection,
       where('active', '==', true)
     );
-    return collectionData(activePortfolioData);
+    const portfolioSnapshot = await getDocs(activePortfolioData);
+    return portfolioSnapshot.docs.map((portfolio) => portfolio.data());
   }
 
   private getWorkImage(fileName: string) {

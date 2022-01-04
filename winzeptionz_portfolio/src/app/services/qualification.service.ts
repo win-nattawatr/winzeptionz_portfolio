@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
 import {
   Firestore,
-  collectionData,
   collection,
   query,
   where,
+  getDocs,
 } from '@angular/fire/firestore';
 import { Qualification } from '../models/qualification.model';
 
@@ -13,13 +12,11 @@ import { Qualification } from '../models/qualification.model';
 export class QualificationService {
   constructor(private firestore: Firestore) {}
 
-  getQualification() {
-    return this.getQualificationData().pipe(
-      map((qualifications) => qualifications.pop())
-    );
+  async getQualification() {
+    return (await this.getQualificationData()).pop();
   }
 
-  private getQualificationData(): Observable<Qualification[]> {
+  private async getQualificationData(): Promise<Qualification[]> {
     const qualificationCollection = collection(
       this.firestore,
       'qualification'
@@ -28,6 +25,9 @@ export class QualificationService {
       qualificationCollection,
       where('active', '==', true)
     );
-    return collectionData(activeQualificationData);
+    const qualificationSnapshot = await getDocs(activeQualificationData);
+    return qualificationSnapshot.docs.map((qualification) =>
+      qualification.data()
+    );
   }
 }

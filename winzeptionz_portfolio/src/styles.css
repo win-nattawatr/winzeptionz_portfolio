@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Lato|ZCOOL+KuaiLe&display=swap");
 @import "swiper/swiper-bundle.min.css";
 
 :root {
@@ -23,6 +24,9 @@
   --container-color: #fff;
   --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
   --scroll-thumb-color: hsl(var(--hue-color), 12%, 80%);
+
+  --loader-dot-color: hsl(var(--hue-color), 69%, 61%);
+  --loader-path-color: hsl(var(--hue-color), 29%, 16%);
 
   /*========== Font and typography ==========*/
   --body-font: "Poppins", sans-serif;
@@ -56,7 +60,8 @@
   --z-modal: 1000;
 }
 
-body.dark-theme {
+body.dark-theme,
+#loader.dark-theme {
   /* HSL color mode */
   --first-color-second: hsl(var(--hue-color), 30%, 8%);
   --title-color: hsl(var(--hue-color), 8%, 95%);
@@ -66,6 +71,8 @@ body.dark-theme {
   --container-color: hsl(var(--hue-color), 29%, 16%);
   --scroll-bar-color: hsl(var(--hue-color), 12%, 48%);
   --scroll-thumb-color: hsl(var(--hue-color), 12%, 36%);
+
+  --loader-path-color: #fff;
 }
 /* Font size for large devices */
 @media screen and (min-width: 968px) {

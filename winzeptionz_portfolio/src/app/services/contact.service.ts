@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
 import {
   Firestore,
-  collectionData,
   collection,
   query,
   where,
+  getDocs,
 } from '@angular/fire/firestore';
 import { Contact } from '../models/contact.model';
 
@@ -13,11 +12,11 @@ import { Contact } from '../models/contact.model';
 export class ContactService {
   constructor(private firestore: Firestore) {}
 
-  getContact() {
-    return this.getContactData().pipe(map((contacts) => contacts.pop()));
+  async getContact() {
+    return (await this.getContactData()).pop();
   }
 
-  private getContactData(): Observable<Contact[]> {
+  private async getContactData(): Promise<Contact[]> {
     const contactCollection = collection(
       this.firestore,
       'contact'
@@ -26,6 +25,7 @@ export class ContactService {
       contactCollection,
       where('active', '==', true)
     );
-    return collectionData(activeContactData);
+    const contactSnapshot = await getDocs(activeContactData);
+    return contactSnapshot.docs.map((contact) => contact.data());
   }
 }

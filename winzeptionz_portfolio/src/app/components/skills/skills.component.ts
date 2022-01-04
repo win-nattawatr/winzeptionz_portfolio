@@ -17,13 +17,16 @@ export class SkillsComponent implements OnInit {
   @Input() skillData?: Skills;
   @ViewChild('section') section?: ElementRef;
 
-  currentToggle: number;
+  skillListFormat?: SkillList[];
+  currentToggle?: number;
 
-  constructor() {
-    this.currentToggle = 0;
+  constructor() {}
+
+  ngOnInit(): void {
+    if (this.skillData?.skills) {
+      this.skillListFormat = this.chunks(this.skillData.skills, 2);
+    }
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.setActive();
@@ -50,15 +53,33 @@ export class SkillsComponent implements OnInit {
     }
   }
 
-  setCurrentToggle(index: number) {
-    if (this.currentToggle == index) {
-      this.currentToggle = -1;
+  setCurrentToggle(toggleIndex?: number) {
+    if (this.currentToggle == toggleIndex) {
+      this.currentToggle = undefined;
       return;
     }
-    this.currentToggle = index;
+    this.currentToggle = toggleIndex;
   }
 
   getScorePercentage(skillScore: number) {
     return { width: `${skillScore}%` };
   }
+
+  private chunks = (a: SkillList, size: number) =>
+    Array.from(new Array(Math.ceil(a.length / size)), (_, i) => {
+      return a.slice(i * size, i * size + size).map((item, index: number) => {
+        item.toggleIndex = i * size + index;
+        return item;
+      });
+    });
 }
+
+type SkillList = {
+  toggleIndex?: number;
+  skillGroupTitle: string;
+  skillGroupSubTitle: string;
+  skillList: {
+    skillName: string;
+    skillScore: number;
+  }[];
+}[];

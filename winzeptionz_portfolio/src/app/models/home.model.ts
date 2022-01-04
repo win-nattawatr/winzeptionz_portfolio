@@ -13,7 +13,7 @@ export class Home {
     this.lineContactUrl = documentData['lineContactUrl'];
     this.linkedInUrl = documentData['linkedInUrl'];
     this.profileImg = documentData['profileImg'];
-    this.subtitle = documentData['title'];
+    this.subtitle = documentData['subtitle'];
     this.title = documentData['title'];
   }
 

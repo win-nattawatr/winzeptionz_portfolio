@@ -1,45 +1,33 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, mergeMap, Observable, tap } from 'rxjs';
-import {
-  Firestore,
-  collectionData,
-  collection,
-  query,
-  where,
-} from '@angular/fire/firestore';
+import { Firestore, collection, query, where } from '@angular/fire/firestore';
 import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
 import { About } from '../models/about.model';
+import { getDocs } from 'firebase/firestore';
 
 @Injectable()
 export class AboutService {
   constructor(private firestore: Firestore, private storage: Storage) {}
 
-  getAbout() {
-    return this.getAboutData().pipe(
-      map((abouts) => abouts.pop()),
-      mergeMap(async (about) => {
-        if (about?.profileImg?.name) {
-          about.profileImgUrl = await this.getAboutProfileImage(
-            about.profileImg.name
-          );
-        }
-        return about;
-      }),
-      mergeMap(async (about) => {
-        if (about?.cv?.name) {
-          about.cvUrl = await this.getAboutCV(about.cv.name);
-        }
-        return about;
-      })
-    );
+  async getAbout() {
+    const about = (await this.getAboutData()).pop();
+    if (about?.profileImg?.name) {
+      about.profileImgUrl = await this.getAboutProfileImage(
+        about.profileImg.name
+      );
+    }
+    if (about?.cv?.name) {
+      about.cvUrl = await this.getAboutCV(about.cv.name);
+    }
+    return about;
   }
 
-  private getAboutData(): Observable<About[]> {
+  private async getAboutData(): Promise<About[]> {
     const aboutCollection = collection(this.firestore, 'about').withConverter(
       About.FireStoreConvertor
     );
     const activeAboutData = query(aboutCollection, where('active', '==', true));
-    return collectionData(activeAboutData);
+    const aboutSnapshot = await getDocs(activeAboutData);
+    return aboutSnapshot.docs.map((about) => about.data());
   }
 
   private getAboutProfileImage(fileName: string) {

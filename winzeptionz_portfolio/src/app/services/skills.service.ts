@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
 import {
   Firestore,
-  collectionData,
   collection,
   query,
   where,
+  getDocs,
 } from '@angular/fire/firestore';
 import { Skills } from '../models/skills.model';
 
@@ -13,11 +12,11 @@ import { Skills } from '../models/skills.model';
 export class SkillsService {
   constructor(private firestore: Firestore) {}
 
-  getSkills() {
-    return this.getSkillsData().pipe(map((skills) => skills.pop()));
+  async getSkills() {
+    return (await this.getSkillsData()).pop();
   }
 
-  private getSkillsData(): Observable<Skills[]> {
+  private async getSkillsData(): Promise<Skills[]> {
     const skillsCollection = collection(this.firestore, 'skills').withConverter(
       Skills.FireStoreConvertor
     );
@@ -25,6 +24,7 @@ export class SkillsService {
       skillsCollection,
       where('active', '==', true)
     );
-    return collectionData(activeSkillsData);
+    const skillsSnapshot = await getDocs(activeSkillsData);
+    return skillsSnapshot.docs.map((skills) => skills.data());
   }
 }
