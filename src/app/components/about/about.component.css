@@ -41,7 +41,7 @@
   justify-content: center;
 }
 
-@media screen and (min-width: 568px) {
+@media screen and (min-width: 576px) {
   .about__container {
     grid-template-columns: repeat(2, 1fr);
   }

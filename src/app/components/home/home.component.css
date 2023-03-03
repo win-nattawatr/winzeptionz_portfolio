@@ -89,7 +89,7 @@
   }
 }
 
-@media screen and (min-width: 568px) {
+@media screen and (min-width: 576px) {
   .home__content {
     grid-template-columns: max-content 1fr 1fr;
   }

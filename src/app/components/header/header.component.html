@@ -42,9 +42,13 @@
     </div>
     <div class="nav__btns">
       <i
-        class="uil uil-moon change-theme"
         #themeButton
         id="theme-button"
+        class="uil change-theme"
+        [ngClass]="{
+          'uil-sun': selectedTheme === 'dark',
+          'uil-moon': selectedTheme === 'light'
+        }"
         (click)="changeTheme()"
       ></i>
 

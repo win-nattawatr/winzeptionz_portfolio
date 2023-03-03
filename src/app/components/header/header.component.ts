@@ -20,14 +20,11 @@ export class HeaderComponent implements OnInit {
 
   navToggle: boolean;
   darkTheme: string = 'dark-theme';
-  iconTheme: string = 'uil-sun';
   selectedTheme: string | null;
-  selectedIcon: string | null;
 
   constructor() {
     this.navToggle = false;
     this.selectedTheme = localStorage.getItem('selected-theme');
-    this.selectedIcon = localStorage.getItem('selected-icon');
   }
 
   ngOnInit(): void {
@@ -35,9 +32,6 @@ export class HeaderComponent implements OnInit {
       document.body.classList[this.selectedTheme === 'dark' ? 'add' : 'remove'](
         this.darkTheme
       );
-      this.themeButton?.nativeElement.classList[
-        this.selectedTheme === 'uil-moon' ? 'add' : 'remove'
-      ](this.iconTheme);
     }
   }
 
@@ -53,7 +47,7 @@ export class HeaderComponent implements OnInit {
     if (this.contactData) {
       return `${this.contactData.firstName} ${this.contactData.lastName[0]}`;
     }
-    return 'My Profile';
+    return '';
   }
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
@@ -65,19 +59,13 @@ export class HeaderComponent implements OnInit {
 
   changeTheme() {
     document.body.classList.toggle(this.darkTheme);
-    this.themeButton?.nativeElement.classList.toggle(this.iconTheme);
 
-    localStorage.setItem('selected-theme', this.getCurrentTheme());
-    localStorage.setItem('selected-icon', this.getCurrentIcon());
+    let currentTheme = this.getCurrentTheme();
+    this.selectedTheme = currentTheme;
+    localStorage.setItem('selected-theme', currentTheme);
   }
 
   private getCurrentTheme() {
     return document.body.classList.contains(this.darkTheme) ? 'dark' : 'light';
-  }
-
-  private getCurrentIcon() {
-    return this.themeButton?.nativeElement.classList.contains(this.iconTheme)
-      ? 'uil-moon'
-      : 'uil-sun';
   }
 }
